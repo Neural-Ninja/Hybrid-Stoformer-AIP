@@ -75,4 +75,8 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## Citation
 
-If you use this code in your research, please cite the following paper:
+If you use this code in your research, please cite the following works:
+
+**[1]** Li, J., Zhang, Y., Xu, Z., Wang, M., & Li, B. (2022). *Stochastic Window Transformer for Image Restoration*. In NeurIPS 2022. [Link](https://proceedings.neurips.cc/paper_files/paper/2022/hash/8b48442a4d494ce0dcabdb0d5456cb53-Abstract.html)
+
+**[2]** Victor Azad, Ankur Kumar. (2025). *Hybrid Stoformer: A Hybrid Transformer-CNN Model for Image Restoration with Reinforcement Learning*. [GitHub Repository](https://github.com/Neural-Ninja/Hybrid-Stoformer-AIP) *(Accessed: 2025-04-21)*
