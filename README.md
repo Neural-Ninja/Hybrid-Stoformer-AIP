@@ -64,3 +64,15 @@ The model is trained using:
 - **Loss Function:** Charbonnier loss (ε=10^-3)
 - **Optimizer:** Adam (β1=0.9, β2=0.999)
 - **Learning Rate:** 3×10^-4, gradually reduced to 10^-6 using cosine annealing.
+
+---
+
+## Licensing
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## Citation
+
+If you use this code in your research, please cite the following paper:
