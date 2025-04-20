@@ -1,0 +1,56 @@
+# Super Resolution configuration
+model:
+  name: stoformer
+  img_size: 256
+  embed_dim: 32
+  depths: [2, 2, 8, 8]
+  num_heads: [1, 2, 4, 8]
+  window_size: 8
+  mlp_ratio: 4.0
+  drop_rate: 0.0
+  attn_drop_rate: 0.0
+  drop_path_rate: 0.1
+  patch_norm: true
+  upscale: 4  # upscaling factor (2x, 3x, or 4x)
+
+data:
+  task: super_resolution
+  train_dir: ./DIV2K/train/HR
+  val_dir: ./DIV2K/val/HR
+  test_dir: ./DIV2K/test/HR
+  lr_patch_size: 64  # low-resolution patch size
+  hr_patch_size: 256  # high-resolution patch size
+  batch_size: 16
+  val_batch_size: 4
+  test_batch_size: 1
+  num_workers: 4
+  augment: true
+
+train:
+  seed: 42
+  lr: 2.5e-4
+  min_lr: 1.0e-6
+  epochs: 500
+  save_frequency: 10
+  save_dir: ./checkpoints/sr_div2k_4x
+
+test:
+  checkpoint_path: ./checkpoints/sr_div2k_4x/best_model.pth
+  save_dir: ./results/sr_div2k_4x
+  save_images: true
+  metrics: [psnr, ssim]
+
+loss:
+  name: mixed
+  l1_weight: 0.5
+  perceptual_weight: 0.3
+  adversarial_weight: 0.2
+
+optimizer:
+  name: adam
+  betas: [0.9, 0.999]
+  weight_decay: 1.0e-5
+
+scheduler:
+  name: cosine
+  eta_min: 1.0e-6 

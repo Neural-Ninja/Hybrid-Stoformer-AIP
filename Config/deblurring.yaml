@@ -1,0 +1,62 @@
+# Deblurring configuration for GoPro dataset
+model:
+  name: stoformer
+  img_size: 256
+  embed_dim: 32
+  depths: [2, 2, 8, 8]
+  num_heads: [1, 2, 4, 8]
+  window_size: 8
+  mlp_ratio: 4.0
+  drop_rate: 0.0
+  attn_drop_rate: 0.0
+  drop_path_rate: 0.1
+  patch_norm: true
+
+data:
+  task: deblurring
+  
+  # Data paths - can be either:
+  # 1. Standard directory structure:
+  clean_dir: ./GoPro-Processed/train/sharp
+  degraded_dir: ./GoPro-Processed/train/blur
+  val_clean_dir: ./GoPro-Processed/val/sharp
+  val_degraded_dir: ./GoPro-Processed/val/blur
+  test_clean_dir: ./GoPro-Processed/test/sharp
+  test_degraded_dir: ./GoPro-Processed/test/blur
+  
+  # 2. Or use the GoPro directory directly (if --gopro_dir is specified in command line)
+  gopro_dir: ./Go-Pro-Deblur-Dataset  # Automatically processes GoPro data structure
+  
+  patch_size: 256
+  batch_size: 4
+  val_batch_size: 2  # Increased from 1
+  test_batch_size: 1
+  num_workers: 4
+  augment: true
+
+train:
+  seed: 42
+  lr: 2.0e-4
+  min_lr: 1.0e-6
+  epochs: 300
+  save_frequency: 10
+  save_dir: ./checkpoints/deblurring
+
+test:
+  checkpoint_path: ./checkpoints/deblurring/best_model.pth
+  save_dir: ./results/deblurring
+  save_images: true
+  metrics: [psnr, ssim]
+
+loss:
+  name: charbonnier
+  eps: 1.0e-3
+
+optimizer:
+  name: adam
+  betas: [0.9, 0.999]
+  weight_decay: 1.0e-5  # Added weight decay for better regularization
+
+scheduler:
+  name: cosine
+  eta_min: 1.0e-6 

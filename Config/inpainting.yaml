@@ -1,0 +1,58 @@
+# Inpainting configuration
+model:
+  name: stoformer
+  img_size: 256
+  embed_dim: 32
+  depths: [1, 2, 8, 8]
+  num_heads: [1, 2, 4, 8]
+  window_size: 8
+  mlp_ratio: 4.0
+  drop_rate: 0.0
+  attn_drop_rate: 0.0
+  drop_path_rate: 0.1
+  patch_norm: true
+
+data:
+  task: inpainting
+  clean_dir: ./Places2/train/images
+  mask_dir: ./Places2/train/masks
+  val_clean_dir: ./Places2/val/images
+  val_mask_dir: ./Places2/val/masks
+  test_clean_dir: ./Places2/test/images
+  test_mask_dir: ./Places2/test/masks
+  mask_mode: random  # random, center, or external
+  mask_ratio: 0.4  # for random mode
+  patch_size: 256
+  batch_size: 8
+  val_batch_size: 4
+  test_batch_size: 1
+  num_workers: 4
+
+train:
+  seed: 42
+  lr: 2.0e-4
+  min_lr: 1.0e-6
+  epochs: 250
+  save_frequency: 10
+  save_dir: ./checkpoints/inpainting_places2
+
+test:
+  checkpoint_path: ./checkpoints/inpainting_places2/best_model.pth
+  save_dir: ./results/inpainting_places2
+  save_images: true
+  metrics: [psnr, ssim, l1]
+
+loss:
+  name: mixed
+  l1_weight: 0.6
+  perceptual_weight: 0.2
+  style_weight: 0.2
+
+optimizer:
+  name: adam
+  betas: [0.9, 0.999]
+  weight_decay: 1.0e-5
+
+scheduler:
+  name: cosine
+  eta_min: 1.0e-6 

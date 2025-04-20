@@ -1,0 +1,55 @@
+# Denoising configuration for SIDD dataset
+model:
+  name: stoformer
+  img_size: 256
+  embed_dim: 32
+  depths: [1, 2, 8, 8]
+  num_heads: [1, 2, 4, 8]
+  window_size: 8
+  mlp_ratio: 4.0
+  drop_rate: 0.0
+  attn_drop_rate: 0.0
+  drop_path_rate: 0.1
+  patch_norm: true
+
+data:
+  task: denoising
+  clean_dir: ./SIDD/train/clean
+  noise_type: real  # using real noise from SIDD dataset
+  val_clean_dir: ./SIDD/val/clean
+  val_noisy_dir: ./SIDD/val/noisy
+  test_clean_dir: ./SIDD/test/clean
+  test_noisy_dir: ./SIDD/test/noisy
+  patch_size: 256
+  batch_size: 4
+  val_batch_size: 1
+  test_batch_size: 1
+  num_workers: 4
+
+train:
+  seed: 42
+  lr: 1.0e-4
+  min_lr: 1.0e-6
+  epochs: 300
+  save_frequency: 10
+  save_dir: ./checkpoints/denoising_sidd
+
+test:
+  checkpoint_path: ./checkpoints/denoising_sidd/best_model.pth
+  save_dir: ./results/denoising_sidd
+  save_images: true
+  metrics: [psnr, ssim]
+
+loss:
+  name: l2
+  l2_weight: 1.0
+  ssim_weight: 0.1  # adding some structural similarity loss weight
+
+optimizer:
+  name: adam
+  betas: [0.9, 0.999]
+  weight_decay: 1.0e-5
+
+scheduler:
+  name: cosine
+  eta_min: 1.0e-6 

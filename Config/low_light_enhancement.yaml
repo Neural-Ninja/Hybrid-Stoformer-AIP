@@ -1,0 +1,56 @@
+# Low Light Enhancement configuration
+model:
+  name: stoformer
+  img_size: 256
+  embed_dim: 32
+  depths: [2, 2, 6, 6]
+  num_heads: [1, 2, 4, 8]
+  window_size: 8
+  mlp_ratio: 4.0
+  drop_rate: 0.0
+  attn_drop_rate: 0.0
+  drop_path_rate: 0.1
+  patch_norm: true
+
+data:
+  task: low_light_enhancement
+  train_dir: ./LOL/train/low
+  train_target_dir: ./LOL/train/normal
+  val_dir: ./LOL/val/low
+  val_target_dir: ./LOL/val/normal
+  test_dir: ./LOL/test/low
+  test_target_dir: ./LOL/test/normal
+  batch_size: 16
+  val_batch_size: 4
+  test_batch_size: 1
+  num_workers: 4
+  augment: true
+
+train:
+  seed: 42
+  lr: 2.0e-4
+  min_lr: 1.0e-6
+  epochs: 300
+  save_frequency: 10
+  save_dir: ./checkpoints/low_light_enhancement
+
+test:
+  checkpoint_path: ./checkpoints/low_light_enhancement/best_model.pth
+  save_dir: ./results/low_light_enhancement
+  save_images: true
+  metrics: [psnr, ssim]
+
+loss:
+  name: mixed
+  l1_weight: 0.6
+  ssim_weight: 0.3
+  perceptual_weight: 0.1
+
+optimizer:
+  name: adam
+  betas: [0.9, 0.999]
+  weight_decay: 1.0e-5
+
+scheduler:
+  name: cosine
+  eta_min: 1.0e-6 
