@@ -1,1 +1,1 @@
-# Neural-Ninja-Hybrid-Stoformer-AIP
+# Hybrid-Stoformer-AIP
